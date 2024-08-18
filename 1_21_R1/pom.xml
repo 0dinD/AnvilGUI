@@ -38,6 +38,57 @@
                     <target>21</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>net.md-5</groupId>
+                <artifactId>specialsource-maven-plugin</artifactId>
+                <version>2.0.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>remap</goal>
+                        </goals>
+                        <id>remap-obf</id>
+                        <configuration>
+                            <srgIn>org.spigotmc:minecraft-server:1.21-R0.1-SNAPSHOT:csrg:maps-spigot</srgIn>
+                            <reverse>true</reverse>
+                            <remappedArtifactAttached>true</remappedArtifactAttached>
+                            <remappedArtifactId>${project.artifactId}-mojmap</remappedArtifactId>
+                            <remappedClassifierName>remapped-obf</remappedClassifierName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>remap</goal>
+                        </goals>
+                        <id>remap-mojang</id>
+                        <configuration>
+                            <srgIn>org.spigotmc:minecraft-server:1.21-R0.1-SNAPSHOT:txt:maps-mojang</srgIn>
+                            <inputFile>${project.build.directory}/${project.artifactId}-mojmap-${project.version}-remapped-obf.jar</inputFile>
+                            <!-- Not working, probably because outShadeRelocation only augments existing mappings (e.g. NMS)? And OBC is not part of any mappings, because OBC was always in the same package. -->
+                            <!-- <outShadeRelocation>org.bukkit.craftbukkit.v1_21_R1=org.bukkit.craftbukkit</outShadeRelocation> -->
+                            <remappedArtifactAttached>true</remappedArtifactAttached>
+                            <remappedArtifactId>${project.artifactId}-mojmap</remappedArtifactId>
+                            <remappedClassifierName>remapped-mojang</remappedClassifierName>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>remap</goal>
+                        </goals>
+                        <id>remap-obc</id>
+                        <configuration>
+                            <srgIn>${project.basedir}/obcv2obc.csrg</srgIn>
+                            <inputFile>${project.build.directory}/${project.artifactId}-mojmap-${project.version}-remapped-mojang.jar</inputFile>
+                            <remappedArtifactAttached>true</remappedArtifactAttached>
+                            <remappedArtifactId>${project.artifactId}-mojmap</remappedArtifactId>
+                            <remappedClassifierName>remapped-obc</remappedClassifierName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
