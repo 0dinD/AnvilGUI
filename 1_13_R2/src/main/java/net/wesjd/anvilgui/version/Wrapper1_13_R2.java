@@ -36,10 +36,15 @@ public class Wrapper1_13_R2 implements VersionWrapper {
      */
     @Override
     public void sendPacketOpenWindow(Player player, int containerId, Object guiTitle) {
+        // The vanilla client is hardcoded to always display the "container.repair"
+        // translation string as the inventory title, on 1.13.2 and below.
+        // Hence, we cannot apply the custom guiTitle.
+        // Either way, we have to send a title, so we use the default one
+        // defined in BlockAnvil.TileEntityContainerAnvil.
         toNMS(player)
                 .playerConnection
-                .sendPacket(new PacketPlayOutOpenWindow(
-                        containerId, "minecraft:anvil", new ChatMessage(Blocks.ANVIL.a() + ".name")));
+                .sendPacket(
+                        new PacketPlayOutOpenWindow(containerId, "minecraft:anvil", new ChatMessage(Blocks.ANVIL.m())));
     }
 
     /**

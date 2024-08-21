@@ -36,8 +36,9 @@ public class Wrapper1_7_R4 implements VersionWrapper {
      */
     @Override
     public void sendPacketOpenWindow(final Player player, final int containerId, final Object guiTitle) {
-        this.toNMS(player).playerConnection.sendPacket(new PacketPlayOutOpenWindow(containerId, 8, "", 9, false));
-        // Passing false as the last parameter instructs the client to use an internal title
+        this.toNMS(player)
+                .playerConnection
+                .sendPacket(new PacketPlayOutOpenWindow(containerId, 8, Blocks.ANVIL.a() + ".name", 0, false));
     }
 
     /**
